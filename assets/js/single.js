@@ -1,7 +1,10 @@
 var issueContainerEl = document.querySelector("#issues-container");
+var limitWarningEl = document.querySelector("#limit-warning");
+
+
 var displayIssues = function (issues) {
-    if (issues.length === 0 ) {
-        issueContainerEl.textContent = "This repo has no open issues!" ;
+    if (issues.length === 0) {
+        issueContainerEl.textContent = "This repo has no open issues!";
         return;
     }
 
@@ -46,7 +49,12 @@ var getRepoIssues = function (repo) {
             response.json().then(function (data) {
                 // pass response data to dom function
                 displayIssues(data);
-            })
+
+                //check if api has paginated usses
+                if (response.headers.get("Link")) {
+                    displayWarning(repo);
+                }
+            });
         }
         else {
             alert("There was a problem with your request!");
@@ -54,6 +62,17 @@ var getRepoIssues = function (repo) {
     });
 };
 
+var displayWarning = function (repo) {
+    
+    var linkEl = document.createElement("a");
+    linkEl.textContent = "See More Issues on GitHub.com";
+    linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
+    linkEl.setAttribute("target", "_blank");
+
+    // add text to warning container
+    limitWarningEl.appendChild(linkEl);
+};
 
 
-getRepoIssues("daniwhitlock/robot-gladiators");
+
+getRepoIssues("facebook/react");
