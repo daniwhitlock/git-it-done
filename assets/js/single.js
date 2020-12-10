@@ -3,11 +3,14 @@ var issueContainerEl = document.querySelector("#issues-container");
 var limitWarningEl = document.querySelector("#limit-warning");
 
 var getRepoIssues = function(repo) {
+    
     // format the github api url
     var apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc";
 
     // make a get request to url
     fetch(apiUrl).then(function(response) {
+        console.log("you got here");
+        console.log(response);
         // request was successful
         if (response.ok) {
             response.json().then(function(data) {
@@ -81,4 +84,4 @@ var displayWarning = function(repo) {
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues("facebook/react");
+getRepoIssues();
