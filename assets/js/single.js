@@ -1,20 +1,31 @@
 var repoNameEl = document.querySelector("#repo-name");
 var issueContainerEl = document.querySelector("#issues-container");
 var limitWarningEl = document.querySelector("#limit-warning");
+var repoNameEl = document.querySelector("#repo-name");
 
-var getRepoIssues = function(repo) {
-    console.log(repo) //showing up as undefined--so where am I getting the repo info from
-    
+var getRepoName = function () {
+    var queryString = document.location.search;
+    var repoName = queryString.split("=")[1];
+    // console.log(repoName);
+    getRepoIssues(repoName);
+    repoNameEl.textContent = repoName;
+
+};
+
+var getRepoIssues = function (repo) {
+    console.log("repo: " + repo) //showing up as undefined--so where am I getting the repo info from
+
     // format the github api url
     var apiUrl = "https://api.github.com/repo/" + repo + "/issues?direction=asc";
-    console.log(apiUrl);
+    console.log("apiUrl: " + apiUrl); //Check to make sure it is pulling correctly
+
     // make a get request to url
     fetch(apiUrl).then(function(response) {
-        console.log("you got here");
+
         console.log(response);
         // request was successful
         if (response.ok) {
-            response.json().then(function(data) {
+            response.json().then(function (data) {
                 // pass response data to dom function
                 displayIssues(data);
 
@@ -31,7 +42,7 @@ var getRepoIssues = function(repo) {
     });
 };
 
-var displayIssues = function(issues) {
+var displayIssues = function (issues) {
     if (issues.length === 0) {
         issueContainerEl.textContent = "This repo has no open issues!";
         return;
@@ -49,7 +60,7 @@ var displayIssues = function(issues) {
         var titleEl = document.createElement("span");
         titleEl.textContent = issues[i].title;
 
-    
+
         // append to container
         issueEl.appendChild(titleEl);
 
@@ -71,7 +82,7 @@ var displayIssues = function(issues) {
     }
 };
 
-var displayWarning = function(repo) {
+var displayWarning = function (repo) {
     // add text to warning container
     limitWarningEl.textContent = "To see more than 30 issues, visit ";
 
@@ -85,4 +96,5 @@ var displayWarning = function(repo) {
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues();
+getRepoName();
+// getRepoIssues();
