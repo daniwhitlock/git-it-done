@@ -9,34 +9,29 @@ var getRepoName = function () {
     var repoName = queryString.split("=")[1];
     // console.log(repoName);
     
-    if(repoName) {
-        //display repo name on the page
+    if (repoName) {
+        // display repo name on the page
         repoNameEl.textContent = repoName;
 
         getRepoIssues(repoName);
     }
     else {
-        //if no repo was given, redirect to the homepage
+        // if no repo was given, redirect to the homepage
         document.location.replace("./index.html");
     }
 
 };
 
-var getRepoIssues = function (repo) {
-    console.log("repo: " + repo); 
-
+var getRepoIssues = function(repo) {
     // format the github api url
     var apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc";
-    console.log("apiUrl: " + apiUrl); //Check to make sure it is pulling correctly
+    // console.log("apiUrl: " + apiUrl); //Check to make sure it is pulling correctly
 
     // make a get request to url
     fetch(apiUrl).then(function(response) {
-        console.log(response);
-
         // request was successful
         if (response.ok) {
-            response.json().then(function (data) {
-                
+            response.json().then(function(data) {
                 // pass response data to dom function
                 displayIssues(data);
 
@@ -47,15 +42,14 @@ var getRepoIssues = function (repo) {
             });
         }
         else {
-           //if not successful, redirect to homepage
-            alert("There was a problem with your request!");
-            // document.location.replace("./index.html");
+           // if not successful, redirect to homepage
+           document.location.replace("./index.html");
 
         }
     });
 };
 
-var displayIssues = function (issues) {
+var displayIssues = function(issues) {
     if (issues.length === 0) {
         issueContainerEl.textContent = "This repo has no open issues!";
         return;
@@ -72,7 +66,6 @@ var displayIssues = function (issues) {
         // create span to hold issue title
         var titleEl = document.createElement("span");
         titleEl.textContent = issues[i].title;
-
 
         // append to container
         issueEl.appendChild(titleEl);
@@ -95,7 +88,7 @@ var displayIssues = function (issues) {
     }
 };
 
-var displayWarning = function (repo) {
+var displayWarning = function(repo) {
     // add text to warning container
     limitWarningEl.textContent = "To see more than 30 issues, visit ";
 
@@ -110,4 +103,3 @@ var displayWarning = function (repo) {
 };
 
 getRepoName();
-// getRepoIssues();

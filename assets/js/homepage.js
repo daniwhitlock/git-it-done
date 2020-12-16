@@ -16,11 +16,9 @@ var formSubmitHandler = function(event) {
         // clear old content
         repoContainerEl.textContent = "";
         nameInputEl.value = "";
-    }
-    else {
-        alert("Please enter a Github username");
-    }
-    console.log(event);
+    } else {
+        alert("Please enter a GitHub username");
+    } 
 };
 
 var getUserRepos = function(user) {
@@ -53,7 +51,7 @@ var displayRepos = function(repos, searchTerm) {
         repoContainerEl.textContent = "No repositories found.";
         return;
     }
-    repoContainerEl.textContent = "";
+    // repoContainerEl.textContent = ""; WASN'T IN 6.4 STARTER CODE
     repoSearchTerm.textContent = searchTerm;
 
     // loop over repos
@@ -61,7 +59,7 @@ var displayRepos = function(repos, searchTerm) {
         // format repo name
         var repoName = repos[i].owner.login + "/" + repos[i].name;
 
-        // create a container for each repo
+        // create a link for each repo
         var repoEl = document.createElement("a");
         repoEl.classList = "list-item flex-row justify-space-between align-center";
         repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
@@ -80,11 +78,11 @@ var displayRepos = function(repos, searchTerm) {
         // check if current repo has issues or not
         if (repos[i].open_issues_count > 0) {
             statusEl.innerHTML =
-                "<i class ='fas fa-times status i-icon icon-danger'></i>" + repos[i].open_issues_count + " issues(s)";
-        }
-        else {
+                "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
+        } else {
             statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
         }
+
         // append to container 
         repoEl.appendChild(statusEl);
 
