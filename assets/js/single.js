@@ -26,15 +26,17 @@ var getRepoIssues = function (repo) {
     console.log("repo: " + repo); 
 
     // format the github api url
-    var apiUrl = "https://api.github.com/repo/" + repo + "/issues?direction=asc";
+    var apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc";
     console.log("apiUrl: " + apiUrl); //Check to make sure it is pulling correctly
 
     // make a get request to url
     fetch(apiUrl).then(function(response) {
+        console.log(response);
 
         // request was successful
         if (response.ok) {
             response.json().then(function (data) {
+                
                 // pass response data to dom function
                 displayIssues(data);
 
@@ -46,7 +48,9 @@ var getRepoIssues = function (repo) {
         }
         else {
            //if not successful, redirect to homepage
-            document.location.replace("./index.html");
+            alert("There was a problem with your request!");
+            // document.location.replace("./index.html");
+
         }
     });
 };
